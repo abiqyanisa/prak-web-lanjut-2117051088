@@ -2,6 +2,8 @@
 
 namespace App\Controllers;
 
+use App\Models\KelasModel;
+use App\Models\UserModel;
 use CodeIgniter\Controller;
 use CodeIgniter\HTTP\CLIRequest;
 use CodeIgniter\HTTP\IncomingRequest;
@@ -21,6 +23,22 @@ use Psr\Log\LoggerInterface;
  */
 abstract class BaseController extends Controller
 {
+    public $userModel;
+    public $kelasModel;
+
+    public function __construct() {
+        $this->userModel = new UserModel();
+        $this->kelasModel = new KelasModel();
+    }
+
+    public function index() {
+        $user = $this->userModel->getUser();
+        $data = [
+            'user' => $user,
+            'title' => 'List User'
+        ];
+        return view('list_user', $data);
+    }
     /**
      * Instance of the main Request object.
      *

@@ -1,12 +1,5 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Create User</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css">
-</head>
-<body>
+<?= $this->extend('layouts/app')?>
+<?= $this->section('content')?>
     <form action="<?= base_url('/user/store') ?>" method="POST">
     <div class="mb-3">
         <label for="exampleInputNama" class="form-label">Nama</label>
@@ -34,5 +27,4 @@
     </div>
     <button type="submit" class="btn btn-primary">Submit</button>
     </form>
-</body>
-</html>
+<?= $this->endSection()?>
