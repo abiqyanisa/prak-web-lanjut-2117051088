@@ -51,22 +51,40 @@ class UserController extends BaseController
     public function store() {
 
         $userModel = new UserModel();
+        $path = 'assets/uploads/img/';
+        $foto = $this->request->getFile('foto');
+        $name = $foto->getRandomName();
+
+        if(!$this->validate($userModel->getValidationRules())) {
+            session()->setFlashdata('errors', $this->validator->listErrors());
+            return redirect()->back()->withInput();
+        }
+
+        if ($foto->move($path, $name)) {
+            $foto = base_url($path . $name);
+        }
 
         $this->userModel->saveUser([
             'nama' => $this->request->getVar('nama'),
             'id_kelas' => $this->request->getVar('kelas'),
             'npm' => $this->request->getVar('npm'),
+            'foto' => $foto
         ]);
+
+        session()->setFlashdata('success', 'Data berhasil ditambahkan');
 
         return redirect()->to('/user');
 
-        // $data = [
-        //     'title' => $this->request->getVar('App'),
-        //     'nama' => $this->request->getVar('nama'),
-        //     'kelas' => $this->request->getVar('kelas'),
-        //     'npm' => $this->request->getVar('npm'),
-        // ];
-        
-        // return view('profile', $data);
+    }
+
+    public function show($id) {
+        $user = $this->userModel->getUser($id);
+
+        $data = [
+            'title' => 'Profile',
+            'user'  => $user,
+        ];
+
+        return view('profile', $data);
     }
 }
